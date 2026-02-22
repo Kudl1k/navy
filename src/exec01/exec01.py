@@ -14,7 +14,11 @@ class Perceptron:
 
     @staticmethod
     def _activate(x):
-        return 1 if x > 0 else -1 # Step function
+        if x > 0:
+            return 1
+        if x < 0:
+            return -1
+        return 0
 
     def _predict(self, X):
         z = np.dot(X, self.weights[1:]) + self.weights[0]           # Linear combination of inputs and weights

@@ -117,7 +117,9 @@ class PerceptronGUI:
             f"Iterations: {self.iter_var.get()}, Weight change: {np.linalg.norm(final_weights - initial_weights):.4f}")
 
         self.fig, ax = plt.subplots(figsize=(6, 5))
-        ax.scatter(X[:, 0], X[:, 1], c=y, cmap='coolwarm', edgecolors='k')
+        colors = {-1: 'blue', 0: 'green', 1: 'red'}
+        point_colors = [colors[label] for label in y]
+        ax.scatter(X[:, 0], X[:, 1], c=point_colors, edgecolors='k')
 
         x_line = np.linspace(-10, 10, 100)
         y_line = slope * x_line + intercept
