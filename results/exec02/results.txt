@@ -1,0 +1,28 @@
+----------------------------------------------
+Weight and bias before the learning phase:
+neuron_hidden1.weights   [2.5645701756662573, -0.5729061190748176]
+neuron_hidden2.weights   [-0.574474215641851, 0.25686318296476174]
+neuron_output.weights    [-0.34034433746784837, -0.644698072023171]
+neuron_hidden1.bias      -0.5047363463417066
+neuron_hidden2.bias      0.5093966301187565
+neuron_output.bias       -1.4407901812556136
+----------------------------------------------
+Learning in progress..
+----------------------------------------------
+Weight and bias after the learning phase:
+neuron_hidden1.weights   [7.096306603189226, -6.91963604279539]
+neuron_hidden2.weights   [-6.28064474525307, 6.500971630532062]
+neuron_output.weights    [-8.247105000045654, -8.328508592495554]
+neuron_hidden1.bias      3.5120439412125726
+neuron_hidden2.bias      3.169018181413825
+neuron_output.bias       12.23968601256572
+----------------------------------------------
+Testing in progress..
+----------------------------------------------
+Guess                    Expected output        Is it equal?
+0.02273272592482016      0                      True
+0.9746007714683795       1                      True
+0.9743627854040479       1                      True
+0.02057304270234119      0                      True
+success is 100.0 %
+----------------------------------------------
