@@ -1,10 +1,11 @@
 # NAVY
 ## Task 1: Percepton - point on the line
 Generate the set of 100 points and use a perceptron to find out whether the
-points lie above, below, or on the line.
+points lie above, below, or on the line. [Link](https://michaelmachu.eu/data/pdf/navy/navy-task1.pdf)
 ![Perceptron](/results/exec01/perceptron_chart_lr0.10_iter100_samples100.png)
 ## Task 2: Simple neural network: XOR problem
-Use a neural network to solve the XOR problem
+Use a neural network to solve the XOR problem [Link](https://michaelmachu.eu/data/pdf/navy/navy-task2.pdf)
+
 **1. Váhy a bias před trénováním**
 
 | Vrstva / Neuron | Váhy / Bias |
