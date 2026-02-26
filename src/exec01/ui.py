@@ -117,7 +117,8 @@ class PerceptronGUI:
 
         self.fig, ax = plt.subplots(figsize=(6, 5))
         colors = {-1: 'blue', 0: 'green', 1: 'red'}
-        point_colors = [colors[label] for label in y]
+        predictions = [perceptron.predict(p) for p in X]
+        point_colors = [colors[pred] for pred in predictions]
         ax.scatter(X[:, 0], X[:, 1], c=point_colors, edgecolors='k')
 
         x_line = np.linspace(-10, 10, 100)
