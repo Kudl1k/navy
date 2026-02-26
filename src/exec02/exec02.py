@@ -44,7 +44,7 @@ class XORNetwork:
             # Vypocet celkove chyby
             error = targets - out_O
 
-            if i % 1000 == 0:
+            if i % 100 == 0:
                 mse = np.mean(error ** 2)
                 loss_history.append(mse)
 

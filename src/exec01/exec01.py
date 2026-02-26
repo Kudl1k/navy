@@ -31,11 +31,12 @@ class Perceptron:
             predicted_all = True
             for xi, target in zip(X, y):
                 prediction = self.predict(xi)                       # udelame predikci pro vzorek
+                update = self.l_r * (target - prediction)  # vypocet aktualizace vah
+                self.weights[1:] += update * xi  # Aktualizace vah pro vstupni vektory
+                self.weights[0] += update  # Aktualizace vah pro bias
                 if prediction != target:                            # pokud se predikce neshoduje s targetem, musime aktualizovat vektory vah
                     predicted_all = False
-                    update = self.l_r * (target - prediction)       # vypocet aktualizace vah
-                    self.weights[1:] += update * xi                 # Aktualizace vah pro vstupni vektory
-                    self.weights[0] += update                       # Aktualizace vah pro bias
+
 
             if predicted_all:
                 break
