@@ -23,11 +23,11 @@ class XORNetwork:
 
     @staticmethod
     def sigmoid(x):
-        return 1 / (1 + np.exp(-x)) # Sigmoid - aktivacni funkce
+        return 1 / (1 + np.exp(-x))                     # Sigmoid - aktivacni funkce
 
     @staticmethod
     def sigmoid_(out):
-        return out * (1 - out)      # Derivace sigmoidu
+        return out * (1 - out)                          # Derivace sigmoidu
 
     def predict(self, inputs):
         out_H = self.sigmoid(np.dot(inputs, self.weights_H) + self.bias_H)  # Vypocet vystupu pro skryte neurony
@@ -49,8 +49,8 @@ class XORNetwork:
                 loss_history.append(mse)
 
             # Backpropagation
-            delta_O = error * self.sigmoid_(out_O) # chyba na vystupu pomoci derivace sigmoidu
-            delta_H = np.dot(delta_O, self.weights_O.T) * self.sigmoid_(out_H) # prenasime chybu z vystupu do skrytych neuronu
+            delta_O = error * self.sigmoid_(out_O)                              # chyba na vystupu pomoci derivace sigmoidu
+            delta_H = np.dot(delta_O, self.weights_O.T) * self.sigmoid_(out_H)  # prenasime chybu z vystupu do skrytych neuronu
 
             # Aktualizace vah a biasů | Gradient Descent
             self.weights_O += learning_rate * np.dot(out_H.T, delta_O)
@@ -70,7 +70,6 @@ def visualize_results(loss_history, nn, inputs, targets):
     ax1.set_ylabel('Mean Squared Error (MSE)')
     ax1.grid(True, linestyle='--', alpha=0.7)
 
-    # 2. Graf: Hranice rozhodnutí (Decision Boundary)
     xx, yy = np.meshgrid(np.linspace(-0.2, 1.2, 100), np.linspace(-0.2, 1.2, 100))
     grid_points = np.c_[xx.ravel(), yy.ravel()]
 
@@ -100,7 +99,6 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
     file_path = os.path.join(output_dir, 'printed_result.md')
 
-    # 2. POMOCNÁ FUNKCE PRO GENEROVÁNÍ MD TABULKY VAH
     def generate_weights_md_table(network):
         return (
             "| Vrstva / Neuron | Váhy / Bias |\n"
@@ -150,20 +148,16 @@ def main():
 
     correct_predictions = 0
     for x, target in zip(inputs, targets):
-        # Predikce pro jeden vzorek
         out_O, _ = nn.predict(x.reshape(1, -1))
         guess_val = out_O[0, 0]
         expected = target[0]
 
-        # Otestování, zda je odhad správný (> 0.5 = 1, jinak 0)
         is_equal = (1 if guess_val > 0.5 else 0) == expected
         if is_equal:
             correct_predictions += 1
 
-        # Výpis do konzole
         print(f"{guess_val:<25}{expected:<23}{is_equal}")
 
-        # Zápis řádku tabulky do Markdownu bez emotikonů
         md_is_equal = "True" if is_equal else "False"
         md_content += f"| `{guess_val:.10f}` | **{expected}** | {md_is_equal} |\n"
 
