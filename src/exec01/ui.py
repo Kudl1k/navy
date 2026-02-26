@@ -101,7 +101,6 @@ class PerceptronGUI:
         if slope is None or intercept is None:
             return
 
-        np.random.seed(42)
         X = np.random.uniform(-10, 10, (self.samples_var.get(), 2))
         y = np.array([1 if p[1] > (slope * p[0] + intercept) else -1 for p in X])
 
