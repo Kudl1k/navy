@@ -11,7 +11,7 @@ class Perceptron:
         self.set_weights(value)                                    # inicializace vektoru
 
     def set_weights(self, n_features):
-        self.weights = np.random.randn(n_features.size + 1) * 0.01  # Initialize weights to small random values
+        self.weights = np.random.randn(n_features.size + 1) * 0.01  # inicializace vektoru (+1 pro bias)
 
     @staticmethod
     def activate(x):
