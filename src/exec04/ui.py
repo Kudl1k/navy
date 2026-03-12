@@ -1,13 +1,15 @@
 import tkinter as tk
 from exec04 import QLearningMouseAndCheese
 import time
+import numpy as np
+
 
 CELL = 70
-
 
 class App:
     def __init__(self, root):
         self.root = root
+        # Předpokládám, že třídu máš importovanou, nebo je ve stejném souboru
         self.env = QLearningMouseAndCheese()
         self.mode = "hole"
 
@@ -183,12 +185,25 @@ class App:
         )
 
     def train(self):
-        self.env.find(episodes=2000)
-        self.status_var.set("Training finished (2000 episodes).")
+        # Pojistka: Zkontrolujeme, jestli je vůbec na hrací ploše sýr
+        if not np.any(self.env.grid == self.env.CHEESE):
+            self.status_var.set("Nemůžu trénovat! Umísti nejdřív sýr.")
+            return
+
+        self.status_var.set("Trénuji... prosím čekejte.")
+        self.root.update()
+
+        # Spuštění upravené funkce find, která vrátí počet potřebných epizod
+        iters = self.env.find(episodes=2000)
+
+        if iters != -1:
+            self.status_var.set(f"Trénink dokončen. Stabilní cesta nalezena po {iters} epizodách!")
+        else:
+            self.status_var.set("Trénink proběhl, ale stabilní cestu se najít nepodařilo (možná je sýr zablokovaný).")
 
     def animate_path(self):
         path = self.env.best_path()
-        self.status_var.set(f"Animating path with {len(path)} steps...")
+        self.status_var.set(f"Animating path with {len(path)-1} steps...")
 
         for (x, y) in path:
             self.draw()

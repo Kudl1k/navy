@@ -77,9 +77,37 @@ class QLearningMouseAndCheese:
 
         return -1                                                   # -1 za normalni krok
 
+    def check_path_success(self, max_steps=200):
+        state = self.state
+        visited = {state}
+
+        for _ in range(max_steps):
+            x, y = state
+            if self.grid[x, y] == self.CHEESE:
+                return True
+            if self.grid[x, y] == self.HOLE:
+                return False
+
+            action = np.argmax(self.Q[x, y])
+            new_state = self.move(state, action)
+
+            if new_state in visited:
+                return False  # Agent se zacyklil
+
+            visited.add(new_state)
+            state = new_state
+
+        return False
+
     def find(self, alpha=0.1, gamma=0.9, epsilon=1.0, epsilon_decay=0.995,
              epsilon_min=0.01, max_steps=200, episodes=1000):
-        for _ in range(episodes):
+        self.Q = np.zeros((self.grid_size, self.grid_size, 4))
+
+        consecutive_successes = 0
+        required_successes = 15                                     # Kolikrát po sobě musí cesta vyjít, abychom si byli jistí
+        first_success_episode = -1
+
+        for episode in range(episodes):
             episode_state = self.state
             for _ in range(max_steps):
                 x,y = episode_state                                  # aktualni pozice
@@ -103,3 +131,16 @@ class QLearningMouseAndCheese:
                     break
 
             epsilon = max(epsilon_min, epsilon * epsilon_decay)     # postupne snizovani epsilonu pro mene nahodne akce
+
+            if self.check_path_success():
+                if consecutive_successes == 0:
+                    first_success_episode = episode + 1  # Ukládáme číslo první epizody, která fungovala
+                consecutive_successes += 1
+
+                if consecutive_successes >= required_successes:
+                    return first_success_episode
+            else:
+                consecutive_successes = 0
+                first_success_episode = -1
+
+        return -1
