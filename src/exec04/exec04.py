@@ -108,7 +108,7 @@ class QLearningMouseAndCheese:
         first_success_episode = -1
 
         for episode in range(episodes):
-            episode_state = self.state
+            episode_state = (random.randint(0, self.grid_size-1), random.randint(0, self.grid_size-1))
             for _ in range(max_steps):
                 x,y = episode_state                                  # aktualni pozice
 

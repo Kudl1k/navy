@@ -1,6 +1,8 @@
 import math
-import numpy as np
+
 import gymnasium as gym
+import numpy as np
+
 
 class QLearningPoleBalancing:
 
@@ -42,7 +44,6 @@ class QLearningPoleBalancing:
             total_reward = 0
 
             while not done:
-                # Rozhodování: Průzkum (Explore) vs. Využití (Exploit)
                 if np.random.uniform(0, 1) < epsilon:
                     action = self.env.action_space.sample()
                 else:
@@ -53,7 +54,7 @@ class QLearningPoleBalancing:
 
                 next_discrete_state = self.discretize_state(next_state)
 
-                # Index do Q tabulky: (x, theta, v, w, akce)
+                # Index do Q tabulky (x, theta, v, w, akce)
                 state_action_idx = discrete_state + (action,)
 
                 # Výpočet odměny a cílové Q hodnoty
@@ -78,7 +79,6 @@ class QLearningPoleBalancing:
                 print(f"Epizoda: {episode + 1}, Odměna: {total_reward}, Epsilon: {epsilon:.2f}")
 
     def visualize(self):
-        # Úkol č. 3: Vizualizujte finální řešení
         print("Spouštím vizualizaci nejlepšího pokusu...")
         env_render = gym.make("CartPole-v1", render_mode="human")
         state, _ = env_render.reset()
@@ -87,7 +87,6 @@ class QLearningPoleBalancing:
 
         while not done:
             discrete_state = self.discretize_state(state)
-            # Při vizualizaci už neprozkoumáváme, bereme jen to nejlepší, co se agent naučil
             action = np.argmax(self.Q[discrete_state])
             state, reward, terminated, truncated, _ = env_render.step(action)
             done = terminated or truncated
@@ -99,5 +98,5 @@ class QLearningPoleBalancing:
 
 if __name__ == "__main__":
     agent = QLearningPoleBalancing()
-    agent.balance(episodes=4000) # Spustí fázi učení (může chvíli trvat)
-    agent.visualize()            # Zobrazí okno s výsledkem
+    agent.balance(episodes=4000)
+    agent.visualize()
