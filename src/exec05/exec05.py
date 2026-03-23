@@ -65,7 +65,7 @@ class QLearningPoleBalancing:
                     # Pokud spadl, přidáme silnou penalizaci
                     target_q = -100
 
-                    # Aktualizace Q-tabulky
+                # Aktualizace Q-tabulky
                 current_q = self.Q[state_action_idx]
                 self.Q[state_action_idx] = current_q + lr * (target_q - current_q)
 
