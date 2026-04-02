@@ -10,7 +10,7 @@ except ImportError:
 class LSystemApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("L-systems drawing by Michael Machu")
+        self.root.title("L-systems drawing")
         self.root.geometry("1100x720")
 
         self.system = LSystem(iterations=3)
@@ -35,7 +35,7 @@ class LSystemApp:
         self.canvas.pack(fill="both", expand=True)
 
         self.start_x_var = tk.StringVar(value="200")
-        self.start_y_var = tk.StringVar(value="200")
+        self.start_y_var = tk.StringVar(value="400")
         self.start_angle_deg_var = tk.StringVar(value="0")
         self.start_angle_rad_var = tk.StringVar(value="0")
         self.nesting_var = tk.StringVar(value="3")
@@ -120,15 +120,27 @@ class LSystemApp:
         except (TypeError, ValueError):
             return fallback
 
-    def _angle_to_radians(self, degree_text, rad_text, default_deg):
-        degree_value = self._read_float(degree_text, default_deg)
-        rad_value = self._read_float(rad_text, math.radians(degree_value))
+    def _angle_to_radians(self, degree_var, rad_var, default_deg):
+        degree_text = degree_var.get().strip()
+        rad_text = rad_var.get().strip()
 
-        # Keep both fields consistent with the value used for drawing.
-        self.start_angle_deg_var.set(str(round(degree_value, 5)))
-        self.start_angle_rad_var.set(str(round(rad_value, 5)))
+        degree_value = self._read_float(degree_text, None)
+        rad_value = self._read_float(rad_text, None)
 
-        return rad_value
+        if degree_text and degree_value is not None:
+            normalized_deg = degree_value
+            normalized_rad = math.radians(normalized_deg)
+        elif rad_text and rad_value is not None:
+            normalized_rad = rad_value
+            normalized_deg = math.degrees(normalized_rad)
+        else:
+            normalized_deg = default_deg
+            normalized_rad = math.radians(normalized_deg)
+
+        degree_var.set(str(round(normalized_deg, 5)))
+        rad_var.set(str(round(normalized_rad, 5)))
+
+        return normalized_rad
 
     def _parse_rules(self, raw_rules):
         text = raw_rules.strip()
@@ -176,11 +188,7 @@ class LSystemApp:
 
             rules = self._parse_rules(self.custom_rule_var.get())
 
-            angle_deg = self._read_float(self.custom_angle_deg_var.get(), 90.0)
-            angle_rad = self._read_float(self.custom_angle_rad_var.get(), math.radians(angle_deg))
-
-            self.custom_angle_deg_var.set(str(round(angle_deg, 5)))
-            self.custom_angle_rad_var.set(str(round(angle_rad, 5)))
+            angle_rad = self._angle_to_radians(self.custom_angle_deg_var, self.custom_angle_rad_var, 90.0)
 
             self._draw_lsystem(axiom, rules, angle_rad)
         except Exception as exc:
@@ -192,7 +200,7 @@ class LSystemApp:
         start_x = self._read_float(self.start_x_var.get(), 200.0)
         start_y = self._read_float(self.start_y_var.get(), 200.0)
         base_deg = self._read_float(self.start_angle_deg_var.get(), 0.0)
-        current_angle = self._angle_to_radians(self.start_angle_deg_var.get(), self.start_angle_rad_var.get(), base_deg)
+        current_angle = self._angle_to_radians(self.start_angle_deg_var, self.start_angle_rad_var, base_deg)
 
         iterations = max(0, self._read_int(self.nesting_var.get(), 3))
         line_size = max(1.0, self._read_float(self.line_size_var.get(), 5.0))
@@ -205,12 +213,12 @@ class LSystemApp:
         stack = []
 
         for symbol in commands:
-            if symbol in {"F", "G", "I", "D"}:
+            if symbol == "F":
                 nx = x + line_size * math.cos(current_angle)
                 ny = y - line_size * math.sin(current_angle)
                 self.canvas.create_line(x, y, nx, ny, fill="#666666", width=1)
                 x, y = nx, ny
-            elif symbol in {"f", "g"}:
+            elif symbol == "b":
                 x += line_size * math.cos(current_angle)
                 y -= line_size * math.sin(current_angle)
             elif symbol == "+":
