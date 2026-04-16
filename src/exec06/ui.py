@@ -55,7 +55,7 @@ class LSystemApp:
                 "angle_deg": 90,
             },
             {
-                "axiom": "F--F--F",
+                "axiom": "F++F++F",
                 "rules": {"F": "F+F--F+F"},
                 "angle_deg": 60,
             },
