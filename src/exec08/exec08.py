@@ -8,7 +8,6 @@ from matplotlib import animation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-# Simple default parameters
 WIDTH, HEIGHT = 700, 700
 MAX_ITER = 200
 ZOOM_IN_FACTOR = 0.5
